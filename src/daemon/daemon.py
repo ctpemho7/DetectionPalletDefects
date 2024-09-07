@@ -4,13 +4,14 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from prometheus_client import Counter, Gauge, Summary, generate_latest
 from prometheus_client.exposition import CONTENT_TYPE_LATEST
+from prometheus_client import make_wsgi_app
 from fastapi.responses import PlainTextResponse
 from model.inference import infer_defect, InferenceResponse
 from model.training import train_model, TrainingResponse
 
 
 app = FastAPI()
-
+app.mount("/metrics", make_wsgi_app())
 
 # Определение метрик
 # Общее кол-во инференсов
