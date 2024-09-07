@@ -1,46 +1,70 @@
 from pydantic import BaseModel
+from typing import List
 import random
+from PIL import Image
+from io import BytesIO
+
+from model.model_settings import model
 
 
-# Иммитация ответа модели
-class InferenceResponse(BaseModel):
+
+class BoxResponse(BaseModel):
     class_name: str  # Название класса дефекта
     class_id: int    # Идентификатор класса дефекта
-    x: int           # Координата X верхнего левого угла области дефекта
-    y: int           # Координата Y верхнего левого угла области дефекта
-    h: int           # Высота области дефекта
-    w: int           # Ширина области дефекта
+    x: float           # Координата X верхнего левого угла области дефекта
+    y: float           # Координата Y верхнего левого угла области дефекта
+    h: float           # Высота области дефекта
+    w: float           # Ширина области дефекта
+
+class InferenceResponse(BaseModel):
+    class_name: str             # Название класса дефекта
+    class_id: int               # Идентификатор класса дефекта
+    boxes: List[BoxResponse]    # Список со всеми bounding boxes
+
 
 
 # Функция для генерации случайного класса
 def infer_defect(image_bytes: bytes) -> InferenceResponse:
     """
-    Имитирует процесс инференса модели и генерирует случайный ответ.
-
-    Функция выбирает случайный класс дефекта из предопределенного списка, а также 
-    случайные координаты и размеры для области дефекта. Возвращает результат в виде
-    объекта InferenceResponse.
+    Запускает процесс инференса модели и выдает ответ от модели. 
+    Возвращает результат в виде объекта InferenceResponse.
 
     Параметры:
-        image_bytes (bytes): Данные изображения (не используются сейчас).
+        image_bytes (bytes): Изображение в виде массива байт.
 
     Returns:
-        InferenceResponse: Имитация ответа модели, содержащая информацию о дефекте.
+        BoxResponse: Ответ модели, содержащий информацию о дефекте.
     """
 
-    # Список возможных классов
-    classes = {
-        1: 'трещина',
-        2: 'потертость',
-        3: 'все_гуд'
-    }
+    image = Image.open(BytesIO(image_bytes)).convert('RGB')
+    predict_results = model.predict(source=image)
 
-    # Генерируем случайные данные
-    class_id = random.choice(list(classes.keys()))
-    class_name = classes[class_id]
-    x, y = random.randint(0, 40), random.randint(0, 40)
-    h, w = random.randint(40, 80), random.randint(40, 90)
+    # достали классы
+    classes = [item.item() for result in predict_results for item in result.boxes.cls]
+    # достали ббоксы
+    boxes = [[item.item() for item in tensor] for result in predict_results for tensor in result.boxes.xywh]
+
+    # формируем ответ 
+    box_responses = []
+    for i in range(len(classes)):
+        box_class = int(classes[i])
+        box = boxes[i]
+        class_name = predict_results[0].names[box_class]  # Получаем название класса по id
+        x, y, w, h = box  # Распаковываем координаты и размеры
+
+        response = BoxResponse(
+            class_name=class_name,
+            class_id=box_class,
+            x=x,
+            y=y,
+            w=w,
+            h=h
+        )        
+        box_responses.append(response)
+
 
     return InferenceResponse(
-        class_name=class_name, class_id=class_id, x=x, y=y, h=h, w=w
+        class_name="OK" if len(box_responses) == 0 else "Broken",
+        class_id=0 if len(box_responses) == 0 else 1,
+        boxes=box_responses
     )
