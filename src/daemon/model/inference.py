@@ -23,33 +23,33 @@ class InferenceResponse(BaseModel):
 
 
 
-# Функция для генерации случайного класса
 def infer_defect(image_bytes: bytes) -> InferenceResponse:
     """
     Запускает процесс инференса модели и выдает ответ от модели. 
     Возвращает результат в виде объекта InferenceResponse.
 
     Параметры:
-        image_bytes (bytes): Изображение в виде массива байт.
+        image_bytes (bytes): Одно изображение в виде массива байт.
 
     Returns:
         BoxResponse: Ответ модели, содержащий информацию о дефекте.
     """
 
     image = Image.open(BytesIO(image_bytes)).convert('RGB')
-    predict_results = model.predict(source=image)
+    # тк одна картинка берем только её
+    predict_result = model.predict(source=image)[0]
 
     # достали классы
-    classes = [item.item() for result in predict_results for item in result.boxes.cls]
+    classes = predict_result.boxes.cls.tolist()
     # достали ббоксы
-    boxes = [[item.item() for item in tensor] for result in predict_results for tensor in result.boxes.xywh]
+    boxes = predict_result.boxes.xywh.tolist()
 
     # формируем ответ 
     box_responses = []
     for i in range(len(classes)):
         box_class = int(classes[i])
         box = boxes[i]
-        class_name = predict_results[0].names[box_class]  # Получаем название класса по id
+        class_name = predict_result.names[box_class]  # Получаем название класса по id
         x, y, w, h = box  # Распаковываем координаты и размеры
 
         response = BoxResponse(
