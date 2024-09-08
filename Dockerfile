@@ -1,11 +1,12 @@
-FROM python:3.10
-WORKDIR /app
+FROM python:3.10-slim
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./requirements.txt /
 RUN apt update && \
     apt install -y \
-      python3-pip
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+      python3-pip libglib2.0-0 libsm6 libxrender1 libxext6 libgl1-mesa-dev
 
-COPY ./src /app/src
-CMD ["fastapi", "run", "./src/daemon/daemon.py", "--port", "8000"]
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+ADD ./src /src
+WORKDIR /src
+CMD ["fastapi", "run", "./daemon/daemon.py", "--reload", "--port", "8000"]
