@@ -20,3 +20,11 @@ services:
       - "8000:8000"
     volumes:
       - ./src:/src
+  tg-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: tg-bot
+    command: python3 ./bot/bot.py
+    volumes:
+      - ./src:/src

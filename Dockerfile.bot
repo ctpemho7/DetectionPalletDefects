@@ -1,0 +1,10 @@
+FROM python:3.10-slim
+
+COPY ./requirements_bot.txt /
+
+RUN pip install --no-cache-dir --upgrade -r requirements_bot.txt
+
+ADD ./src /src
+WORKDIR /src
+
+CMD ['python3', './bot/bot.py']
