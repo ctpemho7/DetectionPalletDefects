@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import List
 from PIL import Image
 
-from responses import InferenceResponse
+from ..ml.responses import InferenceResponse
+
 
 class BaseModel(ABC):
     def __init__(self, weights_path: str):
