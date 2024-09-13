@@ -34,3 +34,10 @@ class BaseModel(ABC):
         :return: None
         """
         pass
+
+    @abstractmethod
+    def get_response(prediction_list):
+        """
+        Получение ответа модели в необходимом для задачи формате
+        """
+        pass

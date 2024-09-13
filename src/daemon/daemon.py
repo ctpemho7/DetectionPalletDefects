@@ -1,12 +1,11 @@
 import time
-import random
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from prometheus_client import Counter, Gauge, Summary, generate_latest
+from prometheus_client import Counter, Summary, generate_latest
 from prometheus_client.exposition import CONTENT_TYPE_LATEST
 from fastapi.responses import PlainTextResponse
-from servicies.inference import infer_defect, InferenceResponse
-from servicies.training import train_model, TrainingResponse
+from src.daemon.servicies.inference import infer_defect, InferenceResponse
+from src.daemon.servicies.training import train_model, TrainingResponse
 
 
 app = FastAPI()
