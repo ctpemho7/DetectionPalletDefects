@@ -2,7 +2,6 @@ from typing import List
 from PIL import Image
 from io import BytesIO
 
-from ..ml.detector import YOLOModel
 from ..ml.classifier import EfficientNetClassifierModel
 from ..ml.responses import InferenceResponse
 

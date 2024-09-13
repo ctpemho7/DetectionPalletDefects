@@ -30,7 +30,7 @@ class EfficientNetClassifierModel(BaseModel):
             predictions.append(self._predict(image))
         return predictions
 
-    def _predict(self, model, image):
+    def _predict(self, image):
         # Load and preprocess the image
         image = np.array(image)
         preprocess = transforms.Compose([
@@ -41,10 +41,8 @@ class EfficientNetClassifierModel(BaseModel):
         ])
         image = preprocess(image).unsqueeze(0).to(self.device)
 
-        # Set the model to evaluation mode
-        model.eval()
         with torch.no_grad():
-            outputs = model(image)
+            outputs = self.model(image)
             _, predicted = torch.max(outputs, 1)
             confidence = torch.nn.functional.softmax(outputs, dim=1)[0][predicted].item() * 100
 
