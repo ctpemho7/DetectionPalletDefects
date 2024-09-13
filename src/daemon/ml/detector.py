@@ -5,6 +5,7 @@ from PIL import Image
 from ..ml.base_model import BaseModel
 from ..ml.responses import DetectionInferenceResponse, BoxResponse
 
+
 class YOLOModel(BaseModel):
     def load_weights(self) -> None:
         """
@@ -20,11 +21,6 @@ class YOLOModel(BaseModel):
         :return: Список результатов предсказаний
         """
         predictions = self.model(source=images)
-        # predictions = []
-        # for img in images:
-            # img_array = np.array(img)  # Преобразуем изображение в массив NumPy
-            # result = self.model(img_array)  # Выполняем предсказание
-            # predictions.append(result)
         return predictions
 
     def train(self, images: List[Image.Image], labels: List) -> None:
@@ -33,8 +29,7 @@ class YOLOModel(BaseModel):
         """
         raise NotImplementedError("Обучение для YOLO не реализовано в этом классе.")
 
-
-    def get_response(prediction_list):
+    def get_response(self, prediction_list) -> DetectionInferenceResponse:
         """
         Получение ответа модели в необходимом для задачи формате
         """
@@ -63,7 +58,6 @@ class YOLOModel(BaseModel):
                 h=h
             )        
             box_responses.append(response)
-
 
         return DetectionInferenceResponse(
             class_name="OK" if len(box_responses) == 0 else "Broken",

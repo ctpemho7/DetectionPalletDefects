@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from PIL import Image
 
+from responses import InferenceResponse
 
 class BaseModel(ABC):
     def __init__(self, weights_path: str):
@@ -36,7 +37,7 @@ class BaseModel(ABC):
         pass
 
     @abstractmethod
-    def get_response(prediction_list):
+    def get_response(self, prediction_list) -> InferenceResponse:
         """
         Получение ответа модели в необходимом для задачи формате
         """

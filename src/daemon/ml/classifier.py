@@ -46,7 +46,7 @@ class EfficientNetClassifierModel(BaseModel):
             _, predicted = torch.max(outputs, 1)
             confidence = torch.nn.functional.softmax(outputs, dim=1)[0][predicted].item() * 100
 
-        return (predicted.item(), confidence)
+        return [predicted.item(), confidence]
 
     def train(self, images: List[Image.Image], labels: List) -> None:
         """
@@ -54,7 +54,7 @@ class EfficientNetClassifierModel(BaseModel):
         """
         raise NotImplementedError("Обучение для YOLO не реализовано в этом классе.")
 
-    def get_response(prediction_list):
+    def get_response(self, prediction_list) -> ClassificationInferenceResponse:
         """
         Получение ответа модели в необходимом для задачи формате
         """
