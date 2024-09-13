@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./src/prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+  # сервис приложения FastAPI
+  palette-app:
+    build: .
+    container_name: palette-app
+    command: fastapi run ./daemon/daemon.py --reload --port=8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+  tg-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: tg-bot
+    command: python3 ./bot/bot.py
+    volumes:
+      - ./src:/src
