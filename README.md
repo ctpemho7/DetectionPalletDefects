@@ -38,6 +38,10 @@
 2. `source .venv/bin/activate` (Для Windows: `.venv/Scripts/activate`)
 3. `pip install -r requirements.txt`
 4. `python ./src/daemon/daemon.py`
+
+При установленном Docker и Docker Compose можно воспользоваться командой: 
+
+`docker compose up`
 > Зайти на Swagger можно поссылке http://localhost:8000/docs
 
 ---
