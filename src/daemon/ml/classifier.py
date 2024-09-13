@@ -63,6 +63,6 @@ class EfficientNetClassifierModel(BaseModel):
 
         return ClassificationInferenceResponse(
             class_id=predict_result[0],
-            class_name="OK" if predict_result[0] else "Broken",
+            class_name="Broken" if predict_result[0] else "OK",
             confidence=predict_result[1]
         )
