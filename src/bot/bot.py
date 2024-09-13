@@ -50,10 +50,10 @@ def handle_photo(message: types.Message):
         code.write(file)
     files = {'file': file}
     r = requests.post(url, files=files)
-
+    result = 'Без дефекта' if json.loads(r.text)['class_name'] == 'OK' else "Сломанный"
     bot.send_message(
         chat_id=message.chat.id,
-        text=json.loads(r.text)['class_name'],
+        text=result,
         reply_markup=create_keyboard()
     )
 
