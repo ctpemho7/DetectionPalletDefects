@@ -1,11 +1,9 @@
 from pydantic import BaseModel
 from typing import List
-import random
 from PIL import Image
 from io import BytesIO
 
-from model.model_settings import model
-
+from ml.detector import YOLOModel
 
 
 class BoxResponse(BaseModel):
@@ -34,10 +32,12 @@ def infer_defect(image_bytes: bytes) -> InferenceResponse:
     Returns:
         BoxResponse: Ответ модели, содержащий информацию о дефекте.
     """
+    weights_path = "./daemon/ml/weights/yolov8n-best.pt"
+    model = YOLOModel(weights_path)
 
     image = Image.open(BytesIO(image_bytes)).convert('RGB')
     # тк одна картинка берем только её
-    predict_result = model.predict(source=image)[0]
+    predict_result = model.predict(image)[0]
 
     # достали классы
     classes = predict_result.boxes.cls.tolist()
