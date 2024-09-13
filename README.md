@@ -20,6 +20,7 @@
     <img src="https://github.com/user-attachments/assets/9f6bbd63-f88f-4437-9def-492956c1a6f3" width="200" height="200" />
     <img src="https://github.com/user-attachments/assets/6254c16f-5213-491a-b329-04f57477e52e" width="200" height="200" />
     <img src="https://github.com/user-attachments/assets/b3963a1c-ff55-4e13-9a0b-c4a3b9d5ef48" width="200" height="200" />
+</p>
 
 ## Видение продукта:
 - Автоматическая детекция дефектов паллет 
@@ -37,6 +38,7 @@
 2. `source .venv/bin/activate` (Для Windows: `.venv/Scripts/activate`)
 3. `pip install -r requirements.txt`
 4. `python ./src/daemon/daemon.py`
+> Зайти на Swagger можно поссылке http://localhost:8000/docs
 
 ---
 
@@ -117,4 +119,14 @@ Steps: 20, Sampler: DPM++ 2M, Schedule type: Karras, CFG scale: 7, Seed: 1944526
 - https://universe.roboflow.com/esprit-moito/mask_rcnn-73vt5
 - https://universe.roboflow.com/emmsolutions/logistic-vat7c
 - https://datasetninja.com/wood-defect-detection
+- https://universe.roboflow.com/grp12palletclassification/classification_pallet_v1
+
+---
+# RoadMap проекта (4.09.24 — 13.09.24)
+
+[Miro](https://miro.com/app/board/uXjVKi3ZjdI=/?share_link_id=999335134571)
+<p align="left">
+    <img src="https://github.com/user-attachments/assets/cc670e94-47d2-4644-80ff-325a89c1f562" width="1280" height="670" />
+</p>
+
 
