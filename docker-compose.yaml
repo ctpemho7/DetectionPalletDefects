@@ -33,7 +33,7 @@ services:
     depends_on:
       - palette-app
   vault:
-    image: vault
+    image: hashicorp/vault
     ports:
       - 8200:8200
 networks:
