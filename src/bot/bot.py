@@ -43,7 +43,7 @@ def handle_user_answer(query: types.CallbackQuery):
 
 @bot.message_handler(content_types=["photo"])
 def handle_photo(message: types.Message):
-    url = 'http://0.0.0.0:8000/infer/'
+    url = 'http://palette-app:8000/infer/'
     file_path = bot.get_file(message.photo[-1].file_id).file_path
     file = bot.download_file(file_path)
     with open("temp.png", "wb") as code:

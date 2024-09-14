@@ -11,6 +11,8 @@ services:
     image: grafana/grafana
     ports:
       - 3000:3000
+    depends_on:
+      - prometheus
   # сервис приложения FastAPI
   palette-app:
     build: .
@@ -28,3 +30,9 @@ services:
     command: python3 ./bot/bot.py
     volumes:
       - ./src:/src
+    depends_on:
+      - palette-app
+networks:
+  docker-net:
+    driver: bridge
+    internal: true
