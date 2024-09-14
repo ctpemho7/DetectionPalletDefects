@@ -32,6 +32,10 @@ services:
       - ./src:/src
     depends_on:
       - palette-app
+  vault:
+    image: vault
+    ports:
+      - 8200:8200
 networks:
   docker-net:
     driver: bridge
